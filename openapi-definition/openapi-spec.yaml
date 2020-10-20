@@ -1,0 +1,46 @@
+# openapi2-functions.yaml
+swagger: '2.0'
+info:
+  title: GCP API  optional-string
+  description: Sample API on API Gateway with a Google Cloud Functions backend
+  version: 1.0.0
+schemes:
+  - https
+produces:
+  - application/json
+
+x-google-backend:
+  address: "https://apigateway-cloudrun-gyiazulcya-uc.a.run.app"
+
+securityDefinitions:
+  firebase:
+    authorizationUrl: ""
+    flow: "implicit"
+    type: "oauth2"
+    x-google-issuer: "https://securetoken.google.com/apigateway-292921"
+    x-google-jwks_uri: "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com"
+    x-google-audiences: "apigateway-292921"
+
+
+paths:
+  /healthcheck:
+    get:
+      summary: healthcheck
+      operationId: healthcheck
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+
+  /identity:
+    get:
+      summary: print user identity
+      operationId: headers
+      security:
+        - firebase: [ ]
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
